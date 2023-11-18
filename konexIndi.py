@@ -17,7 +17,7 @@ class konexIndi():
 
     def getKonexCurrentData(self, standardCode):
         
-        print("get konex details")
+        print("get konex current data")
         TRName = "VC"
 
         ret = giJongmokTRShow.SetQueryName(TRName)          
@@ -32,7 +32,7 @@ class konexIndi():
 
     def getKonexPreviousDayData(self, standardCode):
         
-        print("get konex details")
+        print("get konex previous day data")
         TRName = "VB"
 
         ret = giJongmokTRShow.SetQueryName(TRName)          
@@ -77,7 +77,7 @@ class konexIndi():
                 previousDayClosingPrice = str(giCtrl.GetSingleData(i, 11)) # 전일종가
                 previousDayQuantity = str(giCtrl.GetSingleData(i, 16)) # 전일누적체결수량
 
-                currentData.append([standardCode, currentPrice, changeRate, volume])
+                previousDayData.append([standardCode, previousDayClosingPrice, previousDayQuantity])
 
 
                 
