@@ -7,12 +7,12 @@ class konexIndi():
     def __init__(self):
         super().__init__()
         giJongmokTRShow.RunIndiPython()
-        giJongmokTRShow.SetCallBack('ReceiveData', self.giJongmokTRShow_ReceiveData)
+        giJongmokTRShow.SetCallBack('ReceiveData', self.giJongmokTRShowReceiveData)
         self.rqidD = {}
 
-    # konexDetails - 전일대비율, 누적거래량, 기업고유번호, 종목코드, 전일종가
+    # konexCurrentData - 표준코드, 현재가, 전일대비율, 누적거래대금
 
-    def getKonexDetails(self, standardCode):
+    def getKonexCurrentData(self, standardCode):
         
         print("get konex details")
         TRName = "VC"
