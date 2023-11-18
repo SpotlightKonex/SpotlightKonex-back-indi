@@ -24,3 +24,18 @@ class konexIndi():
         print(type(rqid))
         print('Request Data rqid: ' + str(rqid))
         self.rqidD[rqid] = TRName
+
+    # konexPreviousDayData - 전일종가, 전일누적체결수량
+
+    def getKonexPreviousDayData(self, standardCode):
+        
+        print("get konex details")
+        TRName = "VC"
+
+        ret = giJongmokTRShow.SetQueryName(TRName)          
+        ret = giJongmokTRShow.SetSingleData(0, standardCode) # 표준코드
+        rqid = giJongmokTRShow.RequestData()
+
+        print(type(rqid))
+        print('Request Data rqid: ' + str(rqid))
+        self.rqidD[rqid] = TRName
