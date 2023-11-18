@@ -1,5 +1,7 @@
 import GiExpertControl as giLogin
 import GiExpertControl as giJongmokTRShow
+import time
+import schedule
 
 standardCodeList = []
 currentDataList = []
@@ -23,7 +25,7 @@ class konexIndi():
             if login_return == True:
                 print("INDI 로그인 정보", "INDI 정상 호출")
             else:
-                print("INDI 로그인 정보", "INDI 호출 실패")  
+                print("INDI 로그인 정보", "INDI 호출 실패")   
 
     # [VC] input: 표준코드
 
@@ -119,6 +121,22 @@ class konexIndi():
                 standardCodeList.append(standardCode)
             
             print("StandardCodeList: ", standardCodeList)
+
+if __name__ == "__main__":
+    
+    konexIndi = konexIndi()
+
+    # 1시간마다 현재가, 전일대비율, 누적거래대금 업데이트
+    schedule.every(1).hours.do(konexIndi.getKonexCurrentData, standardCodeList[0])
+
+    # 매일 오전 8시에 전일종가, 전일누적체결수량 업데이트
+    schedule.every().day.at("08:00").do(konexIndi.getKonexPreviousDayData, standardCodeList[0])
+
+    while True:
+        # 예약된 작업을 실행
+        schedule.run_pending()
+        time.sleep(1)
+    
 
                 
             
