@@ -133,10 +133,12 @@ if __name__ == "__main__":
     def getKonexCurrentDataList():
         for standardCode in standardCodeList:
             konexIndi.getKonexCurrentData(standardCode)
+            time.sleep(1)
 
     def getKonexPreviousDayDataList():
         for standardCode in standardCodeList:
             konexIndi.getKonexPreviousDayData(standardCode)
+            time.sleep(1)
 
     # 1시간마다 현재가, 전일대비율, 누적거래대금 업데이트
     schedule.every(1).hours.do(getKonexCurrentDataList)
