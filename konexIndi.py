@@ -126,11 +126,26 @@ if __name__ == "__main__":
     
     konexIndi = konexIndi()
 
+    print("종목코드를 추가합니다.") # 맨 처음 한번 실행시켜주기
+    konexIndi.getKonexStandardCode
+    print("종목코드 추가 완료")
+
+    def getKonexCurrentDataList():
+        for standardCode in standardCodeList:
+            konexIndi.getKonexCurrentData(standardCode)
+
+    def getKonexPreviousDayDataList():
+        for standardCode in standardCodeList:
+            konexIndi.getKonexPreviousDayData(standardCode)
+
     # 1시간마다 현재가, 전일대비율, 누적거래대금 업데이트
-    schedule.every(1).hours.do(konexIndi.getKonexCurrentData, standardCodeList[0])
+    schedule.every(1).hours.do(getKonexCurrentDataList)
 
     # 매일 오전 8시에 전일종가, 전일누적체결수량 업데이트
-    schedule.every().day.at("08:00").do(konexIndi.getKonexPreviousDayData, standardCodeList[0])
+    schedule.every().day.at("08:00").do(getKonexPreviousDayDataList)
+
+    # 한 달에 한 번 표준코드 업데이트
+    schedule.every().month.at("00:00").do(konexIndi.getKonexStandardCode)
 
     while True:
         # 예약된 작업을 실행
