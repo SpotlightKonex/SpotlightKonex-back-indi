@@ -1,6 +1,5 @@
-import sys
+import GiExpertControl as giLogin
 import GiExpertControl as giJongmokTRShow
-from indiUI import Ui_MainWindow
 
 currentData = []
 previousDayData = []
@@ -9,9 +8,21 @@ class konexIndi():
 
     def __init__(self):
         super().__init__()
+        giLogin.RunIndiPython()
         giJongmokTRShow.RunIndiPython()
-        giJongmokTRShow.SetCallBack('ReceiveData', self.giJongmokTRShowReceiveData)
         self.rqidD = {}
+
+        giJongmokTRShow.SetCallBack('ReceiveData', self.giJongmokTRShowReceiveData)
+
+        print(giLogin.GetCommState())
+        if giLogin.GetCommState() == 0: # 정상
+            print("")        
+        elif  giLogin.GetCommState() == 1: # 비정상
+            login_return = giLogin.StartIndi('234110','test0365!','', 'C:\\SHINHAN-i\\indi\\GiExpertStarter.exe')
+            if login_return == True:
+                print("INDI 로그인 정보", "INDI 정상 호출")
+            else:
+                print("INDI 로그인 정보", "INDI 호출 실패")  
 
     # [VC] input: 표준코드
 
