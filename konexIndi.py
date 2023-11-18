@@ -126,9 +126,19 @@ if __name__ == "__main__":
     
     konexIndi = konexIndi()
 
-    print("종목코드를 추가합니다.") # 맨 처음 한번 실행시켜주기
+    # test
+
+    print("종목코드를 추가합니다.")
     konexIndi.getKonexStandardCode
     print("종목코드 추가 완료")
+
+    print("current data를 가져옵니다.")
+    konexIndi.getKonexCurrentData
+    print("current data 가져오기 완료")
+
+    print("previous day data를 가져옵니다.")
+    konexIndi.getKonexPreviousDayData
+    print("previous day data 가져오기 완료")
 
     def getKonexCurrentDataList():
         for standardCode in standardCodeList:
