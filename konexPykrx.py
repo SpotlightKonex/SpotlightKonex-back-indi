@@ -1,17 +1,25 @@
 from pykrx import stock
+from datetime import datetime
+import schedule
+import time
 
 # 시세 조회
 # 티커, 시가, 고가, 저가, 종가, 거래량, 거래대금, 등락률
-# 티커, 시가, 종가, 거래량, 거래대금, 등락률
 
-def getKonexData():
+def get_konex_data():
 
-    konexDataFrame = stock.get_market_ohlcv("20231117", market="KONEX")
-    print(konexDataFrame)
+    today = datetime.today().strftime('%Y%m%d')
 
-# # 순매수 상위종목
-# # 티커, 종목명, 매도거래량, 매수거래량, 순매수거래량, 매도거래대금, 매수거래대금, 순매수거래대금
+    konex_df = stock.get_market_ohlcv(today, market="KONEX")
+    print(konex_df)
 
-# df = stock.get_market_net_purchases_of_equities("20231117", "20231117", "KONEX", "전체")
-# print(df)
+# test
+get_konex_data()
 
+# 매일 오전 8시에 getKonexData 함수 등록
+schedule.every().day.at("08:00").do(get_konex_data)
+
+while True:
+    # 스케줄에 등록된 작업을 확인하고 실행
+    schedule.run_pending()
+    time.sleep(1)
