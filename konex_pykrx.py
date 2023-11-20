@@ -37,31 +37,70 @@ def get_konex_data():
         trading_amount = row[5]  # 거래대금
         corp_code = get_corp_code_from_konex_stock(index)  # stock_konex 테이블에서 corp_code 값을 가져옴
 
-        modified_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 현재 날짜와 시간
-        created_at = modified_at  # 생성일은 수정일과 동일하게 설정
+        created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # 현재 날짜와 시간
+        modified_at = created_at
 
-        insert_query = '''
-        INSERT INTO konex_detail 
-        (price, cmpprevdd_prc, prev_price, trading_volume, trading_amount, corp_code, modified_at, created_at)
-        VALUES 
-        (%s, %s, %s, %s, %s, %s, %s, %s)
+        # 오늘의 데이터가 이미 있는지 확인
+        check_query = '''
+        SELECT * FROM konex_detail 
+        WHERE DATE(created_at) = %s AND corp_code = %s
         '''
-        
-        values = (
-            price,
-            cmpprevdd_prc,
-            prev_price,
-            trading_volume,
-            trading_amount,
-            corp_code,
-            modified_at,
-            created_at
-        )
 
-        cursor.execute(insert_query, values)
+        cursor.execute(check_query, (today, corp_code))
+        existing_data = cursor.fetchone()
+
+        if existing_data:
+            # 데이터가 이미 있는 경우 업데이트
+            update_query = '''
+            UPDATE konex_detail 
+            SET 
+                price = %s,
+                cmpprevdd_prc = %s,
+                prev_price = %s,
+                trading_volume = %s,
+                trading_amount = %s,
+                modified_at = %s
+            WHERE 
+                DATE(created_at) = %s AND corp_code = %s
+            '''
+
+            update_values = (
+                price,
+                cmpprevdd_prc,
+                prev_price,
+                trading_volume,
+                trading_amount,
+                modified_at,
+                today,
+                corp_code
+            )
+
+            cursor.execute(update_query, update_values)
+            print("RDS에 데이터 업데이트 완료")
+        else:
+            # 데이터가 없는 경우 새로운 데이터 삽입
+            insert_query = '''
+            INSERT INTO konex_detail 
+            (price, cmpprevdd_prc, prev_price, trading_volume, trading_amount, corp_code, modified_at, created_at)
+            VALUES 
+            (%s, %s, %s, %s, %s, %s, %s, %s)
+            '''
+
+            insert_values = (
+                price,
+                cmpprevdd_prc,
+                prev_price,
+                trading_volume,
+                trading_amount,
+                corp_code,
+                modified_at,
+                created_at
+            )
+
+            cursor.execute(insert_query, insert_values)
+            print("RDS에 데이터 저장 완료")
 
     connection.commit()
-    print("RDS에 데이터 저장 완료")
 
 def get_corp_code_from_konex_stock(stock_code):
     
