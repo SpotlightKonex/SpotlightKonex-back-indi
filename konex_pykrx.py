@@ -5,13 +5,13 @@ import time
 import pymysql
 
 # RDS 연결 정보
-db_host = '8387448b-ff4e-41ea-874f-130b33bfd64d.external.kr1.mysql.rds.nhncloudservice.com'
+db_host = 'a9b24215-073f-4067-9f2d-9e9677265084.internal.kr1.mysql.rds.nhncloudservice.com'
 db_user = 'team2'
 db_password = 'team2'
 db_name = 'spotlight_konex'
 
 # 데이터베이스 연결 설정
-connection = pymysql.connect(host=db_host, port=13306, user=db_user, password=db_password, db=db_name, charset='utf8mb4')
+connection = pymysql.connect(host=db_host, port=3306, user=db_user, password=db_password, db=db_name, charset='utf8mb4')
 cursor = connection.cursor()
 
 print("RDS 연결 성공")
@@ -129,7 +129,7 @@ def scheduler():
     else:
         print("스케줄러 동작 시간 아님")
 
-schedule.every(10).minutes.do(scheduler)
+schedule.every(1).minutes.do(scheduler)
 
 while True:
     schedule.run_pending()
