@@ -118,10 +118,19 @@ def get_corp_code_from_konex_stock(stock_code):
 # test
 get_konex_data()
 
-# # 매일 오전 8시에 getKonexData 함수 등록
-# schedule.every().day.at("08:00").do(get_konex_data)
+# 평일 오전 9시 ~ 오후 3시 반에 10분마다 함수 실행
+def scheduler():
+    current_time = datetime.now().time()
+    weekday = datetime.today().weekday()
 
-# while True:
-#     # 스케줄에 등록된 작업을 확인하고 실행
-#     schedule.run_pending()
-#     time.sleep(1)
+    # 평일(월요일부터 금요일까지) 오전 9시부터 오후 3시 반까지 10분마다 실행
+    if 0 <= weekday <= 4 and datetime.strptime("09:00", "%H:%M").time() <= current_time <= datetime.strptime("15:30", "%H:%M").time():
+        get_konex_data()
+    else:
+        print("스케줄러 동작 시간 아님")
+
+schedule.every(10).minutes.do(scheduler)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
