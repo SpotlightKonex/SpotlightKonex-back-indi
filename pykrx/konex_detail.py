@@ -118,7 +118,7 @@ def get_corp_code_from_konex_stock(stock_code):
 # test
 get_konex_data()
 
-# 평일 오전 9시 ~ 오후 3시 반에 10분마다 함수 실행
+# 평일 오전 9시 ~ 오후 3시 반에 1분마다 함수 실행
 def scheduler():
     current_time = datetime.now().time()
     weekday = datetime.today().weekday()
